@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = QueueClassicMatchers::VERSION
   spec.authors       = ["Simon Mathieu"]
   spec.email         = ["simon.math@gmail.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = %q{RSpec Matchers and helpers for QueueClassicPlus}
+  spec.description   = %q{RSpec Matchers and helpers for QueueClassicPlus}
   spec.homepage      = ""
   spec.license       = "MIT"
 

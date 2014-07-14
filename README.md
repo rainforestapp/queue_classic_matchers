@@ -1,6 +1,6 @@
 # QueueClassicMatchers
 
-TODO: Write a gem description
+Test helpers and RSpec matchers to [QueueClassicPlus](https://github.com/rainforestapp/queue_classic_plus).
 
 ## Installation
 
@@ -19,6 +19,22 @@ Or install it yourself as:
 ## Usage
 
 TODO: Write usage instructions here
+
+### Matchers
+
+```ruby
+expect(MyQueueClassicPlusJob).to have_queued(*my_args)
+```
+
+
+### Test Helper
+
+Run a subset of the jobs in a queue. Delete the others.
+
+```ruby
+run_queue q_name, [MyQueueClassicPlusJob]
+```
+
 
 ## Contributing
 
