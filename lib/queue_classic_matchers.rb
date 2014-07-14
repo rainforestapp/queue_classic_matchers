@@ -1,3 +1,4 @@
+require 'rspec/matchers'
 require "queue_classic_matchers/version"
 
 module QueueClassicMatchers
