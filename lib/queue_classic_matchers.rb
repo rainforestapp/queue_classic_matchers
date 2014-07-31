@@ -9,6 +9,7 @@ module QueueClassicMatchers
     def self.find_by_args(queue_name, method, args, table = "queue_classic_jobs")
       q = "SELECT * FROM #{table} WHERE q_name = $1 AND method = $2 AND args::text = $3"
       result = QC.default_conn_adapter.execute q, queue_name, method, JSON.dump(args)
+      binding.pry
       result = [result] unless Array === result
       result.compact
     end
@@ -102,7 +103,7 @@ RSpec::Matchers.define :have_scheduled do |*expected_args|
     queue_name = actual.queue.name
     results = QueueClassicMatchers::QueueClassicRspec.find_by_args(queue_name,
                                              method,
-                                             expected,
+                                             expected_args,
                                              "queue_classic_later_jobs")
     results.any? do |entry|
       time_matches = if @time
