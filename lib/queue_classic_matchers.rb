@@ -60,6 +60,8 @@ RSpec::Matchers.define :have_queue_size_of do |expected|
 end
 
 RSpec::Matchers.define :change_queue_size_of do |expected|
+  supports_block_expectations
+
   chain :by do |amount|
     @amount = amount
   end
