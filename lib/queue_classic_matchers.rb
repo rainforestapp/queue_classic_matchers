@@ -18,6 +18,31 @@ module QueueClassicMatchers
       QC.default_conn_adapter.execute "DELETE FROM queue_classic_later_jobs"
     end
   end
+
+  if defined?(QueueClassicPlus)
+    module QueueClassicPlus
+      module Job
+        def self.included(receiver)
+          receiver.class_eval do
+            shared_examples_for "a queueable class" do
+              subject { described_class }
+              its(:queue) { should be_a(::QC::Queue) }
+              it { should respond_to(:do) }
+              it { should respond_to(:perform) }
+
+              it "should be a valid queue name" do
+                subject.queue.name.should be_present
+              end
+            end
+          end
+        end
+      end
+    end
+
+    RSpec.configure do |c|
+      c.include QueueClassicMatchers::QueueClassicPlus::Job, type: :job
+    end
+  end
 end
 
 RSpec::Matchers.define :have_queued do |*expected|
@@ -125,18 +150,5 @@ RSpec::Matchers.define :have_scheduled do |*expected_args|
 
   description do
     "have scheduled arguments"
-  end
-end
-
-if defined?(QueueClassicPlus)
-  RSpec.shared_examples_for "a queueable class" do
-    subject { described_class }
-    its(:queue) { should be_a(::QC::Queue) }
-    it { should respond_to(:do) }
-    it { should respond_to(:perform) }
-
-    it "should be a valid queue name" do
-      subject.queue.name.should be_present
-    end
   end
 end
