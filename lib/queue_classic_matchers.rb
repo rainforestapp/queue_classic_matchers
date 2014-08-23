@@ -39,8 +39,10 @@ module QueueClassicMatchers
       end
     end
 
-    RSpec.configure do |c|
-      c.include QueueClassicMatchers::QueueClassicPlus::Job, type: :job
+    if RSpec.respond_to?(:configure)
+      RSpec.configure do |c|
+        c.include QueueClassicMatchers::QueueClassicPlus::Job, type: :job
+      end
     end
   end
 end
