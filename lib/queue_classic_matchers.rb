@@ -127,3 +127,16 @@ RSpec::Matchers.define :have_scheduled do |*expected_args|
     "have scheduled arguments"
   end
 end
+
+if defined?(QueueClassicPlus)
+  RSpec.shared_examples_for "a queueable class" do
+    subject { described_class }
+    its(:queue) { should be_a(::QC::Queue) }
+    it { should respond_to(:do) }
+    it { should respond_to(:perform) }
+
+    it "should be a valid queue name" do
+      subject.queue.name.should be_present
+    end
+  end
+end
