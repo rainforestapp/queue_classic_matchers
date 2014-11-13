@@ -26,6 +26,8 @@ TODO: Write usage instructions here
 expect(MyQueueClassicPlusJob).to have_queued(*my_args)
 ```
 
+Other matchers are `have_queue_size_of`, `change_queue_size_of` and `have_scheduled`.
+
 
 ### Test Helper
 
