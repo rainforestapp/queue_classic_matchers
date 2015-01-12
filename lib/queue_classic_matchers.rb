@@ -6,8 +6,8 @@ require "queue_classic_matchers/test_helper"
 module QueueClassicMatchers
   # Your code goes here...
   module QueueClassicMatchers::QueueClassicRspec
-    def self.find_by_args(queue_name, method, args, table = "queue_classic_jobs")
-      q = "SELECT * FROM #{table} WHERE q_name = $1 AND method = $2 AND args::text = $3"
+    def self.find_by_args(queue_name, method, args)
+      q = "SELECT * FROM queue_classic_jobs WHERE q_name = $1 AND method = $2 AND args::text = $3"
       result = QC.default_conn_adapter.execute q, queue_name, method, JSON.dump(args)
       result = [result] unless Array === result
       result.compact
@@ -15,7 +15,6 @@ module QueueClassicMatchers
 
     def self.reset!
       QC.default_conn_adapter.execute "DELETE FROM queue_classic_jobs"
-      QC.default_conn_adapter.execute "DELETE FROM queue_classic_later_jobs"
     end
   end
 
@@ -121,7 +120,6 @@ end
 
 RSpec::Matchers.define :have_scheduled do |*expected_args|
   chain :at do |timestamp|
-    @interval = nil
     @time = timestamp
     @time_info = "at #{@time}"
   end
@@ -129,13 +127,11 @@ RSpec::Matchers.define :have_scheduled do |*expected_args|
   match do |actual|
     method = "#{actual.to_s}._perform"
     queue_name = actual.queue.name
-    results = QueueClassicMatchers::QueueClassicRspec.find_by_args(queue_name,
-                                             method,
-                                             expected_args,
-                                             "queue_classic_later_jobs")
+    results = QueueClassicMatchers::QueueClassicRspec.find_by_args(queue_name, method, expected_args)
+
     results.any? do |entry|
       time_matches = if @time
-        Time.parse(entry['not_before']).to_i == @time.to_i
+        Time.parse(entry['scheduled_at']).to_i == @time.to_i
       else
         true
       end
