@@ -1,1 +1,1 @@
-rvm use 2.1.2@queue_classic_matchers --create
+rvm use 2.2.0@queue_classic_matchers --create
