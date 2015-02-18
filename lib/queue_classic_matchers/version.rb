@@ -1,3 +1,3 @@
 module QueueClassicMatchers
-  VERSION = "0.0.4"
+  VERSION = "1.0.0.RC1"
 end
