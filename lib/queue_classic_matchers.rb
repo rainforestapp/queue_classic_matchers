@@ -1,4 +1,5 @@
 require 'rspec/matchers'
+require 'rspec/core'
 require "queue_classic_matchers/version"
 require "queue_classic_matchers/test_worker"
 require "queue_classic_matchers/test_helper"
