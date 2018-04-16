@@ -31,7 +31,7 @@ module QueueClassicMatchers
               it { should respond_to(:perform) }
 
               it 'should be a valid queue name' do
-                subject.queue.name.should be_present
+                expect(subject.queue.name).to be_present
               end
             end
           end
