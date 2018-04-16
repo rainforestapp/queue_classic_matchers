@@ -1,0 +1,50 @@
+version: 2
+
+jobs:
+  test:
+    docker:
+      - image: circleci/ruby:2.5.3-node
+      - image: circleci/postgres:9.6.6-alpine
+    steps:
+      - checkout
+      - run:
+          name: run tests
+          command: |
+            bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3
+            bundle exec rspec
+
+  push_to_rubygems:
+    docker:
+      - image: circleci/ruby:2.5.3
+    steps:
+      - checkout
+      - run:
+          name: Create .gem/credentials file
+          command: |
+            mkdir ~/.gem
+            echo "---
+              :rubygems_api_key: $RUBYGEMS_API_KEY
+            " > ~/.gem/credentials
+            chmod 600 ~/.gem/credentials
+      - run:
+          name: Release to rubygems
+          command: |
+            gem build queue_classic_matcher
+            gem push queue_classic_matcher-*.gem
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test
+
+      - push_to_rubygems:
+          requires:
+            - test
+          filters:
+            branches:
+              ignore:
+                - /.*/
+            tags:
+              only:
+                - /^v.*/

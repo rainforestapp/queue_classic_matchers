@@ -95,12 +95,15 @@ RSpec.configure do |config|
   config.before(:suite) do
     require 'active_record'
     require 'pg'
-    ActiveRecord::Base.establish_connection(
-      :adapter  => 'postgresql',
-      :username => 'postgres',
-      :database => 'queue_classic_matcher_test',
-      :host => 'localhost',
-    )
+
+    db_url = ENV.fetch('DATABASE_URL', 'postgres://postgres:@localhost')
+
+    ActiveRecord::Base.establish_connection(db_url)
+    begin
+      ActiveRecord::Base.connection.create_database('queue_classic_matcher_test')
+    rescue ActiveRecord::StatementInvalid => e
+      raise unless e.cause.class == PG::DuplicateDatabase
+    end
 
     ActiveRecord::Base.connection.execute 'drop schema public cascade; create schema public;'
 

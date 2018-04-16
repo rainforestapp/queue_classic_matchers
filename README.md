@@ -49,3 +49,9 @@ run_queue q_name, [MyQueueClassicPlusJob]
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
+
+## Releasing
+
+1. Open a PR and get it merged to master, making sure you've updated VERSION in `lib/queue_classic_matchers/version.rb`
+2. `git checkout master; git pull`
+3. `rake release:source_control_push`
