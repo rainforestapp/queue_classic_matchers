@@ -93,6 +93,8 @@ RSpec.configure do |config|
 =end
 
   config.before(:suite) do
+    require 'active_record'
+    require 'pg'
     ActiveRecord::Base.establish_connection(
       :adapter  => 'postgresql',
       :username => 'postgres',
