@@ -4,5 +4,5 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'rspec'
-gem "queue_classic_plus", github: 'rainforestapp/queue_classic_plus', branch: 'qc-3-1'
+gem 'queue_classic_plus', github: 'rainforestapp/queue_classic_plus', branch: 'qc-3-1'
 
