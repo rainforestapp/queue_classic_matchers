@@ -93,14 +93,16 @@ RSpec.configure do |config|
 =end
 
   config.before(:suite) do
+    require 'active_record'
+    require 'pg'
     ActiveRecord::Base.establish_connection(
-      :adapter  => "postgresql",
-      :username => "postgres",
-      :database => "queue_classic_matcher_test",
+      :adapter  => 'postgresql',
+      :username => 'postgres',
+      :database => 'queue_classic_matcher_test',
       :host => 'localhost',
     )
 
-    ActiveRecord::Base.connection.execute "drop schema public cascade; create schema public;"
+    ActiveRecord::Base.connection.execute 'drop schema public cascade; create schema public;'
 
     QC.default_conn_adapter = QC::ConnAdapter.new(ActiveRecord::Base.connection.raw_connection)
     QC::Setup.create
@@ -109,7 +111,7 @@ RSpec.configure do |config|
 
   config.before(:each) do
     tables = ActiveRecord::Base.connection.tables.select do |table|
-      table != "schema_migrations"
+      table != 'schema_migrations'
     end
     ActiveRecord::Base.connection.execute("TRUNCATE #{tables.join(', ')} CASCADE") unless tables.empty?
 

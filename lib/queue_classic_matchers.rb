@@ -1,21 +1,21 @@
 require 'rspec/matchers'
 require 'rspec/core'
-require "queue_classic_matchers/version"
-require "queue_classic_matchers/test_worker"
-require "queue_classic_matchers/test_helper"
+require 'queue_classic_matchers/version'
+require 'queue_classic_matchers/test_worker'
+require 'queue_classic_matchers/test_helper'
 
 module QueueClassicMatchers
   # Your code goes here...
   module QueueClassicMatchers::QueueClassicRspec
     def self.find_by_args(queue_name, method, args)
-      q = "SELECT * FROM queue_classic_jobs WHERE q_name = $1 AND method = $2 AND args::text = $3"
+      q = 'SELECT * FROM queue_classic_jobs WHERE q_name = $1 AND method = $2 AND args::text = $3'
       result = QC.default_conn_adapter.execute q, queue_name, method, JSON.dump(args)
       result = [result] unless Array === result
       result.compact
     end
 
     def self.reset!
-      QC.default_conn_adapter.execute "DELETE FROM queue_classic_jobs"
+      QC.default_conn_adapter.execute 'DELETE FROM queue_classic_jobs'
     end
   end
 
@@ -24,14 +24,14 @@ module QueueClassicMatchers
       module Job
         def self.included(receiver)
           receiver.class_eval do
-            shared_examples_for "a queueable class" do
+            shared_examples_for 'a queueable class' do
               subject { described_class }
               its(:queue) { should be_a(::QC::Queue) }
               it { should respond_to(:do) }
               it { should respond_to(:perform) }
 
-              it "should be a valid queue name" do
-                subject.queue.name.should be_present
+              it 'should be a valid queue name' do
+                expect(subject.queue.name).to be_present
               end
             end
           end
@@ -64,7 +64,7 @@ RSpec::Matchers.define :have_queued do |*expected|
   end
 
   description do
-    "should enqueue in queue classic"
+    'should enqueue in queue classic'
   end
 end
 
@@ -114,7 +114,7 @@ RSpec::Matchers.define :change_queue_size_of do |expected|
   end
 
   description do
-    "should change the queue size"
+    'should change the queue size'
   end
 end
 
@@ -148,6 +148,6 @@ RSpec::Matchers.define :have_scheduled do |*expected_args|
   end
 
   description do
-    "have scheduled arguments"
+    'have scheduled arguments'
   end
 end
