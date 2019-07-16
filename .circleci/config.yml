@@ -29,12 +29,12 @@ jobs:
       - run:
           name: Release to rubygems
           command: |
-            gem build queue_classic_matcher
-            gem push queue_classic_matcher-*.gem
+            gem build queue_classic_matchers
+            gem push queue_classic_matchers-*.gem
 
 workflows:
   version: 2
-  test:
+  gem_release:
     jobs:
       - test
 
