@@ -39,8 +39,6 @@ workflows:
       - test
 
       - push_to_rubygems:
-          requires:
-            - test
           filters:
             branches:
               ignore:
