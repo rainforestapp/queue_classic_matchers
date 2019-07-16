@@ -6,11 +6,9 @@ require 'queue_classic_matchers/version'
 Gem::Specification.new do |spec|
   spec.name          = 'queue_classic_matchers'
   spec.version       = QueueClassicMatchers::VERSION
-  spec.authors       = ['Simon Mathieu']
-  spec.email         = ['simon.math@gmail.com']
+  spec.authors       = ['Simon Mathieu', 'Jean-Philippe Boily', 'Emanuel Evans', 'Jonathan Barber']
   spec.summary       = %q{RSpec Matchers and helpers for QueueClassicPlus}
-  spec.description   = %q{RSpec Matchers and helpers for QueueClassicPlus}
-  spec.homepage      = ''
+  spec.homepage      = 'https://github.com/rainforestapp/queue_classic_matchers'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0")
