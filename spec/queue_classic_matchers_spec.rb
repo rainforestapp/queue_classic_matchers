@@ -33,4 +33,15 @@ describe QueueClassicMatchers do
       expect(TestJob).to_not have_queue_size_of(0)
     end
   end
+
+  describe 'have_scheduled' do
+    it 'works' do
+      Timecop.freeze do
+        t0 = Time.now
+        TestJob.enqueue_perform_in 60 * 60, 1
+
+        expect(TestJob).to have_scheduled(1).at(t0 + 60 * 60)
+      end
+    end
+  end
 end

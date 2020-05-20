@@ -132,6 +132,8 @@ RSpec::Matchers.define :have_scheduled do |*expected_args|
 
     results.any? do |entry|
       time_matches = if @time
+        next entry['scheduled_at'] if entry['scheduled_at'].is_a?(Time) # ActiveRecord 6
+
         (Time.parse(entry['scheduled_at']).to_i - @time.to_i).abs <= 2
       else
         true
