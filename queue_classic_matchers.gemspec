@@ -17,7 +17,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'queue_classic', '>= 3.1.0'
-  spec.add_development_dependency 'bundler', '~> 1.6'
+  spec.add_development_dependency 'bundler', '~> 2.1'
   spec.add_development_dependency 'rake'
   spec.add_development_dependency 'pg'
   spec.add_development_dependency 'activerecord'
