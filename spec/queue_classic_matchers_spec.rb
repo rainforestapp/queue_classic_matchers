@@ -41,6 +41,7 @@ describe QueueClassicMatchers do
         TestJob.enqueue_perform_in 60 * 60, 1
 
         expect(TestJob).to have_scheduled(1).at(t0 + 60 * 60)
+        expect(TestJob).not_to have_scheduled(1).at(t0 + 60 * 60 - 3)
       end
     end
   end
