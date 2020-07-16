@@ -131,8 +131,10 @@ RSpec::Matchers.define :have_scheduled do |*expected_args|
     results = QueueClassicMatchers::QueueClassicRspec.find_by_args(queue_name, method, expected_args)
 
     results.any? do |entry|
-      time_matches = if @time
-        (Time.parse(entry['scheduled_at']).to_i - @time.to_i).abs <= 2
+      if @time
+        scheduled_at = entry['scheduled_at']
+        scheduled_at = Time.parse(scheduled_at) unless scheduled_at.is_a?(Time) # ActiveRecord < 6
+        (scheduled_at.to_i - @time.to_i).abs <= 2
       else
         true
       end
