@@ -9,13 +9,21 @@ module QueueClassicMatchers
   module QueueClassicMatchers::QueueClassicRspec
     def self.find_by_args(queue_name, method, args)
       q = 'SELECT * FROM queue_classic_jobs WHERE q_name = $1 AND method = $2 AND args::text = $3'
-      result = QC.default_conn_adapter.execute q, queue_name, method, JSON.dump(args)
+      result = QC.default_conn_adapter.execute q, queue_name, method, JSON.dump(serialized(args))
       result = [result] unless Array === result
       result.compact
     end
 
     def self.reset!
       QC.default_conn_adapter.execute 'DELETE FROM queue_classic_jobs'
+    end
+
+    def self.serialized(args)
+      if defined?(QueueClassicPlus) && defined?(Rails)
+        ActiveJob::Arguments.serialize(args)
+      else
+        args
+      end
     end
   end
 
