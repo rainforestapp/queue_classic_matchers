@@ -4,7 +4,7 @@ Test helpers and RSpec matchers to [QueueClassicPlus](https://github.com/rainfor
 
 ## Compatibility
 
-This version of the matchers are compatible with queue_classic 3.1+ which includes built-in scheduling. See other branches for other compatible versions.
+This version of the matchers are compatible with queue_classic 4 which includes built-in scheduling. See other branches for other compatible versions.
 
 ## Installation
 
