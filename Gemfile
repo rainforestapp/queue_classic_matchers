@@ -5,4 +5,4 @@ gemspec
 
 gem 'rspec'
 # TODO: release qc plus
-gem 'queue_classic_plus', github: 'rainforestapp/queue_classic_plus', tag: 'v4.0.0-alpha5'
+gem 'queue_classic_plus', github: 'rainforestapp/queue_classic_plus', tag: 'v4.0.0-alpha7'
