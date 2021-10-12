@@ -8,7 +8,7 @@ module QueueClassicMatchers
   # Your code goes here...
   module QueueClassicMatchers::QueueClassicRspec
     def self.find_by_args(queue_name, method, args)
-      q = 'SELECT * FROM queue_classic_jobs WHERE q_name = $1 AND method = $2 AND args::text = $3'
+      q = 'SELECT * FROM queue_classic_jobs WHERE q_name = $1 AND method = $2 AND args = $3'
       result = QC.default_conn_adapter.execute q, queue_name, method, JSON.dump(serialized(args))
       result = [result] unless Array === result
       result.compact
