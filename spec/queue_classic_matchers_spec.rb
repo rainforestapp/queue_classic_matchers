@@ -14,10 +14,11 @@ describe QueueClassicMatchers do
       expect(TestJob).to have_queued
     end
 
-    it 'works wiht argument' do
-      expect(TestJob).to_not have_queued(1)
-      TestJob.do 1
-      expect(TestJob).to have_queued(1)
+    it 'works with argument' do
+      args = [1, { foo: true }, [:baz, 'bar']]
+      expect(TestJob).to_not have_queued(*args)
+      TestJob.do *args
+      expect(TestJob).to have_queued(*args)
       expect(TestJob).to_not have_queued(2)
     end
   end
