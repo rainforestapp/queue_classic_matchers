@@ -41,6 +41,21 @@ jobs:
             gem build queue_classic_matchers
             gem push queue_classic_matchers-*.gem
 
+  update_jira:
+    docker:
+      - image: alpine:3.8
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_TOKEN
+    steps:
+      - run:
+          name: Install dependencies
+          command: apk add --no-cache bash curl git openssh
+      - checkout
+      - run:
+          name: Update JIRA
+          command: .circleci/update-jira.sh
+
 workflows:
   version: 2
   gem_release:
@@ -48,7 +63,6 @@ workflows:
       - test:
           context:
             - DockerHub
-
       - push_to_rubygems:
           filters:
             branches:
@@ -60,3 +74,9 @@ workflows:
           context:
             - DockerHub
             - RubyGems
+      - update_jira:
+          requires:
+            - push_to_rubygems
+          context:
+            - DockerHub
+            - update-jira-webhook
