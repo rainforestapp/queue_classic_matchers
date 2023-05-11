@@ -105,12 +105,12 @@ RSpec::Matchers.define :change_queue_size_of do |expected|
     @amount || 1
   end
 
-  match do |actual|
-    old = expected.queue.count
-    actual.call
-    new = expected.queue.count
+  match do |block|
+    old_count = expected.queue.count
+    block.call
+    new_count = expected.queue.count
 
-    new - old == (amount || 1)
+    new_count - old_count == amount
   end
 
   failure_message do |actual|
