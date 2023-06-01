@@ -114,13 +114,27 @@ RSpec::Matchers.define :change_queue_size_of do |expected|
     @actual == amount
   end
 
+  match_when_negated do |block|
+    old_count = expected.queue.count
+    block.call
+    new_count = expected.queue.count
+
+    if @amount
+      @actual = new_count - old_count
+      @actual != amount
+    else
+      new_count == old_count
+    end
+  end
+
   failure_message do
     change = @actual.zero? ? "did not change" : "changed by #{@actual}"
     "should have changed queue size of #{expected} by #{amount} but #{change}"
   end
 
   failure_message_when_negated do
-    "should not have changed queue size of #{expected} by #{amount}"
+    chain = @amount.nil? ? "" : " by #{@amount}"
+    "should not have changed queue size of #{expected}#{chain}"
   end
 
   description do
