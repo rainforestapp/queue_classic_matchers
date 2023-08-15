@@ -46,4 +46,17 @@ describe QueueClassicMatchers do
       end
     end
   end
+
+  describe 'change_queue_size_of' do
+    it 'works' do
+      expect { TestJob.do }.to change_queue_size_of(TestJob)
+      expect { TestJob.do }.to change_queue_size_of(TestJob).by(1)
+      expect { TestJob.do; TestJob.do }.to change_queue_size_of(TestJob).by(2)
+      expect { TestJob }.to_not change_queue_size_of(TestJob)
+      expect { TestJob.do; TestJob.do }.to_not change_queue_size_of(TestJob).by(1)
+      expect do
+        expect { TestJob.do; TestJob.do }.to_not change_queue_size_of(TestJob)
+      end.to raise_error(RSpec::Expectations::ExpectationNotMetError)
+    end
+  end
 end

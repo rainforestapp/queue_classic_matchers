@@ -105,20 +105,36 @@ RSpec::Matchers.define :change_queue_size_of do |expected|
     @amount || 1
   end
 
-  match do |actual|
-    old = expected.queue.count
-    actual.call
-    new = expected.queue.count
+  match do |block|
+    old_count = expected.queue.count
+    block.call
+    new_count = expected.queue.count
 
-    new - old == (amount || 1)
+    @actual = new_count - old_count
+    @actual == amount
   end
 
-  failure_message do |actual|
-    "should have a queue size of #{expected} by #{amount}"
+  match_when_negated do |block|
+    old_count = expected.queue.count
+    block.call
+    new_count = expected.queue.count
+
+    if @amount
+      @actual = new_count - old_count
+      @actual != amount
+    else
+      new_count == old_count
+    end
   end
 
-  failure_message_when_negated do |actual|
-    "should not have a queue size of #{expected} by #{amount}"
+  failure_message do
+    change = @actual.zero? ? "did not change" : "changed by #{@actual}"
+    "should have changed queue size of #{expected} by #{amount} but #{change}"
+  end
+
+  failure_message_when_negated do
+    chain = @amount.nil? ? "" : " by #{@amount}"
+    "should not have changed queue size of #{expected}#{chain}"
   end
 
   description do
@@ -130,7 +146,7 @@ end
 RSpec::Matchers.define :have_scheduled do |*expected_args|
   chain :at do |timestamp|
     @time = timestamp
-    @time_info = "at #{@time}"
+    @time_info = "at #{@time.to_fs}"
   end
 
   match do |actual|
