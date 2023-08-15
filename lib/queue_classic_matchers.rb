@@ -146,7 +146,7 @@ end
 RSpec::Matchers.define :have_scheduled do |*expected_args|
   chain :at do |timestamp|
     @time = timestamp
-    @time_info = "at #{@time}"
+    @time_info = "at #{@time.to_fs}"
   end
 
   match do |actual|
